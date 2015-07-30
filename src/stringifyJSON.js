@@ -2,10 +2,13 @@
 // var stringifyJSON = JSON.stringify;
 // but you don't so you're going to write it from scratch:
 var stringifyJSON = function(target) {
-  if (typeof target === "string") {
-      return "\"" + target + "\"";
-  } else if (target === null || typeof target === "number" || typeof target === "boolean") {
+  if (Object.prototype.toString.call(target) ===  "[object String]") {
+      return "\"" + target.valueOf() + "\"";
+  } else if (target === null) {
       return "" + target;
+  } else if (Object.prototype.toString.call(target) === "[object Number]" ||
+    Object.prototype.toString.call(target) === "[object Boolean]"){
+      return "" + target.valueOf();
   } else if (target === undefined || typeof target === "symbol") {
       return undefined;
   } else if (Array.isArray(target)) {
@@ -21,7 +24,7 @@ var stringifyJSON = function(target) {
           }
       }
       return result += ']';
-    } else if (typeof target === "object") {
+    } else if (Object.prototype.toString.call(target) === "[object Object]") {
         var objResult = '{';
         var objLength = Object.keys(target).length;
         var counter = 0;
@@ -41,10 +44,5 @@ var stringifyJSON = function(target) {
     }
   };
 
-// Saved at http://repl.it/zJh/11
 // Requirements for stringify also added per Mozilla's documentation
-// *** KNOWN BUG *** - The condition below I could not get to pass for my version of stringify at this time ***
-// Boolean, Number, and String objects are converted to the corresponding primitive values during stringification, in accord with the traditional conversion semantics
-// JSON.stringify([new Number(1), new String('false'), new Boolean(false)]);
-// SHOULD EVALUATE TO --> // '[1,"false",false]'
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
