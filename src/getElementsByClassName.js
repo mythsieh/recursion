@@ -16,13 +16,16 @@
 var getElementsByClassName = function(className) {
   var body = document.body;
   var arr = [];
-  for (var i = 0; i < body.childNodes.length; i++) {
-    if (body.childNodes[i].nodeType === 1) {
-      if (body.childNodes[i].classList.contains(className)){
-        arr.push(body.childNodes[i]);
-      }
+  var walkTheDom = function(element){
+    for (var i = 0; i < element.childNodes.length; i++) {
+        if (element.childNodes[i].nodeType === 1) {
+            if (element.childNodes[i].classList.contains(className)){
+                arr.push(element.childNodes[i]);
+            }
+        }
     }
-  }
+  };
+  walkTheDom(body);
   return arr;
 };
 
