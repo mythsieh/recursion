@@ -14,42 +14,31 @@
 
 // But instead we're going to implement it from scratch:
 var getElementsByClassName = function(className) {
-  var body = document.body;
-  var arr = [];
-  var walkTheDom = function(element){
-    for (var i = 0; i < element.childNodes.length; i++) {
-        if (element.childNodes[i].nodeType === 1) {
-            if (element.childNodes[i].classList.contains(className)){
-                arr.push(element.childNodes[i]);
+    var body = document.body;
+    var arr = [];
+    if (body.classList.contains(className)) {
+      arr.push(body);
+    }
+    var walkTheDom = function(element){
+        for (var i = 0; i < element.childNodes.length; i++) {
+            if (element.childNodes[i].childNodes.length > 0) {
+                walkTheDom(element.childNodes[i]);
+            }
+            if (element.childNodes[i].nodeType === 1) {
+                if (element.childNodes[i].classList.contains(className)){
+                    arr.push(element.childNodes[i]);
+                }
             }
         }
-    }
-  };
-  walkTheDom(body);
-  return arr;
+    };
+    walkTheDom(body);
+    return arr;
 };
 
 // My work
-// https://jsfiddle.net/mythsieh/x7sp93as/3/
+// https://jsfiddle.net/mythsieh/x7sp93as/5/
 // ============================================
 // NOTES:
 // 1) unable to do new HTMLCollection
 // 2) unable to make array-like object and add read only length property
 // 3) I will make do with an array
-
-//  OLD CODE/GOT NOWHERE
-
-// var list = body.childNodes;
-// var obj = {};
-// for (var i = 0; i < list.length; i++) {
-//   if (list[i].nodeType === 1) {
-//     if (list[i].classList.contains('targetClassName')){
-//       // console.log(list[i]);
-//       // console.log(list[i].classList);
-//     }
-//   }
-// }
-// // start in document.body
-// check element for child nodes
-
-// check if dom element has
